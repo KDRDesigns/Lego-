@@ -1,0 +1,52 @@
+---
+name: design-standards-review
+description: Validates UI specs or front-end implementations against the design standards in references/ and outputs a structured compliance report with remediations.
+license: internal
+---
+
+## Purpose
+Help any agent review UI work (specs, code, screenshots) against our Design Standards and generate actionable feedback.
+
+## Inputs (ask if missing)
+- Artifact type: code | spec | screenshot | PR diff | component API
+- Platform: web | iOS | Android
+- Component(s) and states: default/hover/pressed/disabled/error/loading
+- Constraints: existing tokens, legacy CSS, deadlines
+
+## Sources of truth (required)
+- references/standards.md
+- references/tokens.json (if present)
+- assets/report-template.md
+
+## Procedure
+1) Identify the UI surface (component/page), platform, states, and context.
+2) Extract implemented decisions:
+   - tokens (color/type/spacing), sizes, layout rules, component anatomy, state behavior
+3) Compare against standards and record:
+   - PASS items
+   - FAIL items (cite standard section or ID)
+4) Provide remediations:
+   - specific token names
+   - specific spacing/type scale values
+   - component API adjustments
+   - code snippets where appropriate
+5) If unknowns exist, list assumptions and request missing info.
+
+## Output (MUST follow this format)
+### Summary
+- Overall: PASS | PASS WITH CHANGES | FAIL
+- Scope:
+- Standards referenced:
+
+### Findings
+1) [Area] - PASS/FAIL
+   - Evidence:
+   - Standard:
+   - Fix:
+
+### Suggested patch (optional)
+- Files:
+- Snippet/diff:
+
+### Questions / Follow-ups
+- ...
