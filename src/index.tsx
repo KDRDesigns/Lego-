@@ -66,7 +66,8 @@ export function Box({
   tone?: Tone;
   padding?: number;
   style?: CSSProperties;
-} & React.HTMLAttributes<HTMLElement>) {
+  [key: string]: any;
+}) {
   return (
     <Comp
       style={{
@@ -149,7 +150,8 @@ export function Text({
   size?: number;
   weight?: number;
   style?: CSSProperties;
-} & React.HTMLAttributes<HTMLElement>) {
+  [key: string]: any;
+}) {
   return (
     <Comp
       style={{
