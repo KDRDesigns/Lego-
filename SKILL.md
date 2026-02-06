@@ -1,22 +1,32 @@
-# Lego Design Build Standards
+## Expanded Color Requirements
 
-## Component Usage
-- Ensure that all components are used appropriately, adhering to their specified functions.
-- Avoid using components in unintended ways that could compromise the integrity or usability of the design.
+The following colors are integral to the Lego Design System:
+- **Primary Colors**: Red, Yellow, Blue, Green
+- **Secondary Colors**: Orange, Purple, Pink
+- **Neutrals**: White, Black, Gray
 
-## WCAG Compliance
-- Follow the Web Content Accessibility Guidelines (WCAG) to ensure that the designs are accessible to all users.
-- Use sufficient color contrast, ensure logical navigation, and provide text alternatives.
+Each color should adhere to the specific hex values defined in the official Lego branding guidelines.
 
-## Design Tokens
-- Use design tokens to maintain consistency across the design. These should include:
-  - Color palette
-  - Typography
-  - Spacing
-- Design tokens should be defined in a centralized location and reused throughout the project.
+## Spacing Requirements
 
-## Content Style Guidelines
-- Maintain a clear and consistent tone across all content.
-- Use simple language and avoid jargon where possible.
-- Ensure that content is organized logically and is easy to navigate.
-- Proofread all content for spelling and grammatical errors before finalizing the design.
+- **Base Unit**: The standard spacing unit is 8px.
+- **Margin**: Use multiples of the base unit for margins. For example:
+   - Small: 8px
+   - Medium: 16px
+   - Large: 24px
+
+- **Padding**: Consistent padding should also use multiples of the base unit to maintain uniformity across components.
+
+## Typography Requirements
+
+- **Font Family**: The primary font family is 'Lego Sans', with fallback to sans-serif.
+- **Font Sizes**: Standard font sizes are:
+   - Small: 12px
+   - Medium: 16px
+   - Large: 24px
+
+- **Font Weights**:
+   - Regular: 400
+   - Bold: 700
+
+All text should maintain high contrast with the background for readability, following accessibility guidelines.
