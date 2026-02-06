@@ -72,6 +72,8 @@ export function Box({
       style={{
         ...baseBlockStyle(tone),
         padding,
+        maxWidth: "100%",
+        boxSizing: "border-box",
         ...style,
       }}
       {...rest}
@@ -155,7 +157,7 @@ export function Text({
       style={{
         fontFamily: theme.font,
         margin: 0,
-        fontSize: size,
+        fontSize: `clamp(${Math.max(12, size - 2)}px, ${size}px, ${size + 2}px)`,
         fontWeight: weight,
         lineHeight: 1.25,
         color: theme.text,
@@ -193,12 +195,13 @@ export function Button({
         ...baseBlockStyle(tone),
         ...focusableStyle(disabled),
         padding: `${padY}px ${padX}px`,
-        fontSize: size === "sm" ? 13 : size === "lg" ? 16 : 14,
+        fontSize: `clamp(${size === "sm" ? 12 : size === "lg" ? 15 : 13}px, ${size === "sm" ? 13 : size === "lg" ? 16 : 14}px, ${size === "sm" ? 14 : size === "lg" ? 18 : 16}px)`,
         fontWeight: 800,
         letterSpacing: 0.2,
         outline: "none",
         userSelect: "none",
         transform: "translateY(0)",
+        minWidth: "fit-content",
         ...style,
       }}
       onMouseDown={(e) => {
@@ -252,12 +255,13 @@ export function IconButton({
       style={{
         ...baseBlockStyle(tone),
         ...focusableStyle(disabled),
-        width: size,
+        width: `min(${size}px, 100%)`,
         height: size,
         display: "grid",
         placeItems: "center",
         padding: 0,
         outline: "none",
+        flexShrink: 0,
         ...style,
       }}
       onFocus={(e) => {
@@ -301,7 +305,7 @@ export function Input({
   const errId = error ? `${inputId}-err` : undefined;
 
   return (
-    <Stack gap={6} style={{ ...style }}>
+    <Stack gap={6} style={{ width: "100%", ...style }}>
       <label htmlFor={inputId} style={{ fontFamily: theme.font, fontWeight: 800 }}>
         {label} {required ? <span aria-hidden="true">*</span> : null}
       </label>
@@ -317,6 +321,8 @@ export function Input({
           fontWeight: 700,
           outline: "none",
           boxShadow: theme.shadow,
+          width: "100%",
+          boxSizing: "border-box",
         }}
         onFocus={(e) => {
           (e.currentTarget as HTMLInputElement).style.boxShadow = `${theme.shadow}, ${theme.focusRing}`;
@@ -375,7 +381,7 @@ export function Textarea({
   const errId = error ? `${textareaId}-err` : undefined;
 
   return (
-    <Stack gap={6} style={{ ...style }}>
+    <Stack gap={6} style={{ width: "100%", ...style }}>
       <label htmlFor={textareaId} style={{ fontFamily: theme.font, fontWeight: 800 }}>
         {label} {required ? <span aria-hidden="true">*</span> : null}
       </label>
@@ -393,6 +399,8 @@ export function Textarea({
           outline: "none",
           resize: "vertical",
           boxShadow: theme.shadow,
+          width: "100%",
+          boxSizing: "border-box",
         }}
         onFocus={(e) => {
           (e.currentTarget as HTMLTextAreaElement).style.boxShadow = `${theme.shadow}, ${theme.focusRing}`;
@@ -440,7 +448,7 @@ export function Card({
   style?: CSSProperties;
 } & React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <Box tone={tone} padding={16} style={{ ...style }} {...rest}>
+    <Box tone={tone} padding={16} style={{ width: "100%", ...style }} {...rest}>
       {(title || subtitle) && (
         <Stack gap={4} style={{ marginBottom: 12 }}>
           {title ? <Text as="h3" size={16} weight={900}>{title}</Text> : null}
@@ -518,6 +526,7 @@ export function Toggle({
         gap: 10,
         fontFamily: theme.font,
         fontWeight: 800,
+        flexWrap: "wrap",
         ...style,
         ...(disabled ? { opacity: 0.55, cursor: "not-allowed" } : { cursor: "pointer" }),
       }}
@@ -546,6 +555,7 @@ export function Toggle({
           boxShadow: theme.shadow,
           position: "relative",
           outline: "none",
+          flexShrink: 0,
         }}
         onFocus={(e) => {
           if (disabled) return;
@@ -609,8 +619,9 @@ export function Modal({
         background: "rgba(0,0,0,0.35)",
         display: "grid",
         placeItems: "center",
-        padding: 16,
+        padding: "clamp(8px, 2vw, 16px)",
         zIndex: 9999,
+        overflowY: "auto",
       }}
     >
       <div
@@ -619,10 +630,11 @@ export function Modal({
         aria-labelledby={titleId}
         style={{
           width: "min(560px, 100%)",
+          maxWidth: "100%",
         }}
       >
-        <Card tone={tone} style={{ padding: 16 }}>
-          <Inline style={{ justifyContent: "space-between", marginBottom: 10 }}>
+        <Card tone={tone} style={{ padding: "clamp(12px, 3vw, 16px)" }}>
+          <Inline style={{ justifyContent: "space-between", marginBottom: 10, flexWrap: "nowrap" }}>
             <Text as="h2" size={18} weight={950} id={titleId}>
               {title}
             </Text>

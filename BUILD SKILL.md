@@ -2,9 +2,9 @@
 
 ## Component Specifications
 - **Bricks:**
-  - Standard size: 8mm x 9.6mm
-  - Stud dimensions: 4.8mm diameter
-  - Minimum wall thickness: 1.2mm
+  - Standard size: 8px x 10px
+  - Stud dimensions: 5px diameter
+  - Minimum wall thickness: 1px
 
 ## Color Requirements
 - Primary colors must align with the Lego color palette.
@@ -12,7 +12,7 @@
 - Use only approved colors from the Lego color standard.
 
 ## Spacing Scale
-- Use a consistent spacing unit based on the size of 1 Lego stud (4.8mm).
+- Use a consistent spacing unit based on the size of 1 Lego stud (5px).
 - Spacing adjustments must be multiples of the stud dimensions.
 
 ## Typography Hierarchy
