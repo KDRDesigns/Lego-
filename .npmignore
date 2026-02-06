@@ -1,0 +1,23 @@
+# Source files (only dist should be published)
+src/
+
+# Config files
+tsconfig.json
+.gitignore
+.npmignore
+
+# Documentation that's not needed in the package
+BUILD SKILL.md
+DESIGN_AUDIT_SKILL.md
+
+# Development files
+node_modules/
+.vscode/
+.idea/
+*.log
+.DS_Store
+
+# Testing
+coverage/
+*.test.*
+*.spec.*
