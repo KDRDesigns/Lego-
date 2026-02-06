@@ -645,7 +645,7 @@ export function Modal({
       >
         <Card tone={tone} style={{ padding: "clamp(12px, 3vw, 16px)" }}>
           <Inline style={{ justifyContent: "space-between", marginBottom: 10 }}>
-            <Text as="h2" size={18} weight={950} id={titleId} style={{ marginRight: 8 }}>
+            <Text as="h2" size={18} weight={950} id={titleId} style={{ marginRight: 10 }}>
               {title}
             </Text>
             <IconButton label="Close dialog" onClick={onClose}>
