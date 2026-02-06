@@ -1,32 +1,27 @@
-## Expanded Color Requirements
+# Comprehensive Design Standards
 
-The following colors are integral to the Lego Design System:
-- **Primary Colors**: Red, Yellow, Blue, Green
-- **Secondary Colors**: Orange, Purple, Pink
-- **Neutrals**: White, Black, Gray
+## Component Specifications
+- **Bricks:**
+  - Standard size: 8mm x 9.6mm
+  - Stud dimensions: 4.8mm diameter
+  - Minimum wall thickness: 1.2mm
 
-Each color should adhere to the specific hex values defined in the official Lego branding guidelines.
+## Color Requirements
+- Primary colors must align with the Lego color palette.
+- Colors must be vibrant and opaque.
+- Use only approved colors from the Lego color standard.
 
-## Spacing Requirements
+## Spacing Scale
+- Use a consistent spacing unit based on the size of 1 Lego stud (4.8mm).
+- Spacing adjustments must be multiples of the stud dimensions.
 
-- **Base Unit**: The standard spacing unit is 8px.
-- **Margin**: Use multiples of the base unit for margins. For example:
-   - Small: 8px
-   - Medium: 16px
-   - Large: 24px
+## Typography Hierarchy
+- **Headings:**
+  - H1: 24pt, Bold
+  - H2: 18pt, Regular
+  - Body text: 14pt, Regular
+- Font should be sans-serif and easily readable.
 
-- **Padding**: Consistent padding should also use multiples of the base unit to maintain uniformity across components.
-
-## Typography Requirements
-
-- **Font Family**: The primary font family is 'Lego Sans', with fallback to sans-serif.
-- **Font Sizes**: Standard font sizes are:
-   - Small: 12px
-   - Medium: 16px
-   - Large: 24px
-
-- **Font Weights**:
-   - Regular: 400
-   - Bold: 700
-
-All text should maintain high contrast with the background for readability, following accessibility guidelines.
+## Alignment with Lego Design System
+- Adhere strictly to the design principles laid out in the Lego Design System documentation.
+- Ensure all components follow the established guidelines for functionality and aesthetics.
