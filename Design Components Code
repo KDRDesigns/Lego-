@@ -152,12 +152,14 @@ export function Text({
   weight?: number;
   style?: CSSProperties;
 } & React.HTMLAttributes<HTMLElement>) {
+  const minSize = Math.max(12, size - 2);
+  const maxSize = size + 2;
   return (
     <Comp
       style={{
         fontFamily: theme.font,
         margin: 0,
-        fontSize: `clamp(${Math.max(12, size - 2)}px, ${size}px, ${size + 2}px)`,
+        fontSize: `clamp(${minSize}px, ${size}px, ${maxSize}px)`,
         fontWeight: weight,
         lineHeight: 1.25,
         color: theme.text,
@@ -187,6 +189,14 @@ export function Button({
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const padY = size === "sm" ? 8 : size === "lg" ? 14 : 10;
   const padX = size === "sm" ? 12 : size === "lg" ? 18 : 14;
+  
+  // Calculate responsive font sizes
+  const fontSizes = {
+    sm: { min: 12, preferred: 13, max: 14 },
+    md: { min: 13, preferred: 14, max: 16 },
+    lg: { min: 15, preferred: 16, max: 18 },
+  };
+  const { min, preferred, max } = fontSizes[size];
 
   return (
     <button
@@ -195,7 +205,7 @@ export function Button({
         ...baseBlockStyle(tone),
         ...focusableStyle(disabled),
         padding: `${padY}px ${padX}px`,
-        fontSize: `clamp(${size === "sm" ? 12 : size === "lg" ? 15 : 13}px, ${size === "sm" ? 13 : size === "lg" ? 16 : 14}px, ${size === "sm" ? 14 : size === "lg" ? 18 : 16}px)`,
+        fontSize: `clamp(${min}px, ${preferred}px, ${max}px)`,
         fontWeight: 800,
         letterSpacing: 0.2,
         outline: "none",
@@ -634,8 +644,8 @@ export function Modal({
         }}
       >
         <Card tone={tone} style={{ padding: "clamp(12px, 3vw, 16px)" }}>
-          <Inline style={{ justifyContent: "space-between", marginBottom: 10, flexWrap: "nowrap" }}>
-            <Text as="h2" size={18} weight={950} id={titleId}>
+          <Inline style={{ justifyContent: "space-between", marginBottom: 10 }}>
+            <Text as="h2" size={18} weight={950} id={titleId} style={{ marginRight: 8 }}>
               {title}
             </Text>
             <IconButton label="Close dialog" onClick={onClose}>
