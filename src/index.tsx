@@ -1,4 +1,4 @@
-import React, { CSSProperties, useId } from "react";
+import React, { CSSProperties, useId, useMemo, useState } from "react";
 
 /**
  * Lego Design System (fictional)
@@ -635,6 +635,345 @@ export function Modal({
           <div>{children}</div>
         </Card>
       </div>
+    </div>
+  );
+}
+
+/* =======================================================================================
+ * 13) SkillsDashboard — example “dashboard” composition
+ * ======================================================================================= */
+
+export type SkillsDashboardStat = {
+  id: string;
+  label: string;
+  value: string;
+  tone?: Tone;
+  badge?: { label: string; tone?: Tone };
+};
+
+export type SkillsDashboardSkill = {
+  id: string;
+  name: string;
+  level: number; // 0..100
+  tone?: Tone;
+  tag?: { label: string; tone?: Tone };
+};
+
+export type SkillsDashboardActivityItem = {
+  id: string;
+  tone?: Tone;
+  label: string;
+  timestamp?: string;
+};
+
+function ProgressBar({
+  value,
+  tone = "brand",
+}: {
+  value: number;
+  tone?: Tone;
+}) {
+  const pct = clamp(value, 0, 100);
+  const t = theme.tones[tone];
+  return (
+    <div
+      role="progressbar"
+      aria-label="Skill progress"
+      aria-valuenow={pct}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      style={{
+        height: 14,
+        borderRadius: 999,
+        border: `${theme.border}px solid ${t.border}`,
+        background: "#fff",
+        boxShadow: "0 3px 0 rgba(0,0,0,0.12)",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        aria-hidden="true"
+        style={{
+          width: `${pct}%`,
+          height: "100%",
+          background: t.bg,
+        }}
+      />
+    </div>
+  );
+}
+
+const defaultStats: SkillsDashboardStat[] = [
+  {
+    id: "streak",
+    label: "Streak",
+    value: "12 days",
+    tone: "brand",
+    badge: { label: "🔥 On fire", tone: "success" },
+  },
+  {
+    id: "skills",
+    label: "Skills tracked",
+    value: "8",
+    tone: "success",
+    badge: { label: "+2 this week", tone: "brand" },
+  },
+  {
+    id: "focus",
+    label: "Focus score",
+    value: "78%",
+    tone: "warning",
+    badge: { label: "Needs a push", tone: "neutral" },
+  },
+];
+
+const defaultSkills: SkillsDashboardSkill[] = [
+  { id: "react", name: "React", level: 82, tone: "brand", tag: { label: "Core", tone: "brand" } },
+  { id: "ts", name: "TypeScript", level: 74, tone: "success", tag: { label: "Daily", tone: "success" } },
+  { id: "a11y", name: "Accessibility", level: 58, tone: "warning", tag: { label: "Improve", tone: "warning" } },
+  { id: "testing", name: "Testing", level: 46, tone: "danger", tag: { label: "Priority", tone: "danger" } },
+];
+
+const defaultActivity: SkillsDashboardActivityItem[] = [
+  { id: "a1", tone: "success", label: "Completed a TypeScript kata", timestamp: "Today" },
+  { id: "a2", tone: "brand", label: "Reviewed a PR for accessibility fixes", timestamp: "Yesterday" },
+  { id: "a3", tone: "warning", label: "Missed a practice session", timestamp: "2 days ago" },
+];
+
+export function SkillsDashboard({
+  title = "Skills Dashboard",
+  subtitle = "Build consistent, playful UI blocks—one stud at a time.",
+  stats = defaultStats,
+  skills = defaultSkills,
+  activity = defaultActivity,
+  style,
+  ...rest
+}: {
+  title?: string;
+  subtitle?: string;
+  stats?: SkillsDashboardStat[];
+  skills?: SkillsDashboardSkill[];
+  activity?: SkillsDashboardActivityItem[];
+  style?: CSSProperties;
+} & React.HTMLAttributes<HTMLDivElement>) {
+  // Spacing scale (aligned to the “stud” idea from BUILD SKILL.md)
+  const STUD = 12;
+
+  const [query, setQuery] = useState("");
+  const [showOnlyNeedsWork, setShowOnlyNeedsWork] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
+  const [addedSkills, setAddedSkills] = useState<SkillsDashboardSkill[]>([]);
+
+  const [newName, setNewName] = useState("");
+  const [newLevel, setNewLevel] = useState(50);
+  const [newError, setNewError] = useState<string | undefined>(undefined);
+
+  const allSkills = useMemo(() => [...addedSkills, ...skills], [addedSkills, skills]);
+
+  const filteredSkills = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return allSkills.filter((s) => {
+      if (showOnlyNeedsWork && s.level >= 60) return false;
+      if (!q) return true;
+      return s.name.toLowerCase().includes(q);
+    });
+  }, [allSkills, query, showOnlyNeedsWork]);
+
+  return (
+    <div
+      style={{
+        fontFamily: theme.font,
+        color: theme.text,
+        background: "#f9fafb",
+        padding: STUD * 2,
+        minHeight: "100vh",
+        ...style,
+      }}
+      {...rest}
+    >
+      <Stack gap={STUD * 2} style={{ maxWidth: 1040, margin: "0 auto" }}>
+        {/* Header */}
+        <Inline gap={STUD} style={{ justifyContent: "space-between", alignItems: "flex-start" }}>
+          <Stack gap={6} style={{ minWidth: 260 }}>
+            <Text as="h1" size={24} weight={900}>
+              {title}
+            </Text>
+            <Text as="p" size={14} weight={400} style={{ opacity: 0.9 }}>
+              {subtitle}
+            </Text>
+          </Stack>
+
+          <Inline gap={STUD} style={{ justifyContent: "flex-end" }}>
+            <Toggle
+              label="Show needs work"
+              checked={showOnlyNeedsWork}
+              onChange={setShowOnlyNeedsWork}
+              toneOn="warning"
+              toneOff="neutral"
+            />
+            <Button tone="brand" onClick={() => setAddOpen(true)}>
+              Add skill
+            </Button>
+          </Inline>
+        </Inline>
+
+        {/* KPI cards */}
+        <Inline gap={STUD} wrap={true}>
+          {stats.map((s) => (
+            <Card key={s.id} tone={s.tone ?? "neutral"} style={{ flex: 1, minWidth: 240 }}>
+              <Stack gap={STUD}>
+                <Text as="h2" size={18} weight={400}>
+                  {s.label}
+                </Text>
+                <Text as="p" size={32} weight={900}>
+                  {s.value}
+                </Text>
+                {s.badge ? <Badge tone={s.badge.tone ?? "neutral"}>{s.badge.label}</Badge> : null}
+              </Stack>
+            </Card>
+          ))}
+        </Inline>
+
+        {/* Skills */}
+        <Card
+          title="Skills"
+          subtitle="Filter, track progress, and keep a steady cadence."
+          style={{ padding: STUD + 4 }}
+        >
+          <Stack gap={STUD + 4}>
+            <Input
+              label="Search"
+              value={query}
+              onChange={(e) => setQuery((e.target as HTMLInputElement).value)}
+              placeholder="Type a skill name…"
+              description="Tip: enable “Show needs work” to focus on skills under 60%."
+            />
+
+            <Stack gap={STUD}>
+              {filteredSkills.length === 0 ? (
+                <Box tone="neutral" padding={STUD}>
+                  <Text as="p" size={14} weight={400}>
+                    No matching skills.
+                  </Text>
+                </Box>
+              ) : (
+                filteredSkills.map((s) => (
+                  <Box key={s.id} tone="neutral" padding={STUD}>
+                    <Stack gap={8}>
+                      <Inline gap={STUD} style={{ justifyContent: "space-between" }}>
+                        <Text as="h3" size={14} weight={900}>
+                          {s.name}
+                        </Text>
+                        {s.tag ? <Badge tone={s.tag.tone ?? "neutral"}>{s.tag.label}</Badge> : null}
+                      </Inline>
+
+                      <ProgressBar value={s.level} tone={s.tone ?? "brand"} />
+
+                      <Inline gap={8} style={{ justifyContent: "space-between" }}>
+                        <Text as="p" size={12} weight={400} style={{ opacity: 0.85 }}>
+                          Current level
+                        </Text>
+                        <Text as="p" size={12} weight={900}>
+                          {clamp(s.level, 0, 100)}%
+                        </Text>
+                      </Inline>
+                    </Stack>
+                  </Box>
+                ))
+              )}
+            </Stack>
+          </Stack>
+        </Card>
+
+        {/* Recent activity */}
+        <Card title="Recent activity" subtitle="Keep an eye on momentum." style={{ padding: STUD + 4 }}>
+          <Stack gap={STUD}>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              {activity.map((a) => (
+                <li key={a.id} style={{ marginBottom: STUD }}>
+                  <Inline gap={STUD} style={{ alignItems: "baseline" }}>
+                    <Badge tone={a.tone ?? "neutral"}>•</Badge>
+                    <Stack gap={4} style={{ flex: 1 }}>
+                      <Text as="p" size={14} weight={400}>
+                        {a.label}
+                      </Text>
+                      {a.timestamp ? (
+                        <Text as="p" size={12} weight={400} style={{ opacity: 0.75 }}>
+                          {a.timestamp}
+                        </Text>
+                      ) : null}
+                    </Stack>
+                  </Inline>
+                </li>
+              ))}
+            </ul>
+          </Stack>
+        </Card>
+      </Stack>
+
+      <Modal
+        open={addOpen}
+        title="Add a skill"
+        onClose={() => {
+          setAddOpen(false);
+          setNewError(undefined);
+        }}
+        tone="brand"
+      >
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const name = newName.trim();
+            if (!name) {
+              setNewError("Please enter a skill name.");
+              return;
+            }
+            const level = clamp(Number.isFinite(newLevel) ? newLevel : 0, 0, 100);
+            setAddedSkills((prev) => [
+              {
+                id: `custom-${Date.now()}`,
+                name,
+                level,
+                tone: level < 60 ? "warning" : "success",
+                tag: { label: "Custom", tone: "neutral" },
+              },
+              ...prev,
+            ]);
+            setNewName("");
+            setNewLevel(50);
+            setNewError(undefined);
+            setAddOpen(false);
+          }}
+        >
+          <Stack gap={STUD + 4}>
+            <Input
+              label="Skill name"
+              value={newName}
+              onChange={(e) => setNewName((e.target as HTMLInputElement).value)}
+              required
+              error={newError}
+              placeholder="e.g. UI Architecture"
+            />
+            <Input
+              label="Starting level (0–100)"
+              type="number"
+              min={0}
+              max={100}
+              value={String(newLevel)}
+              onChange={(e) => setNewLevel(Number((e.target as HTMLInputElement).value))}
+              description="You can adjust later—start with an honest baseline."
+            />
+            <Inline gap={STUD} style={{ justifyContent: "flex-end" }}>
+              <Button type="button" tone="neutral" onClick={() => setAddOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" tone="brand">
+                Save
+              </Button>
+            </Inline>
+          </Stack>
+        </form>
+      </Modal>
     </div>
   );
 }
