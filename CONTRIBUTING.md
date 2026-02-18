@@ -31,6 +31,56 @@ npm run typecheck
 npm run build
 ```
 
+### Importing from a Local/Desktop Copy
+
+If you already have a local copy of the repository on your desktop or want to connect an existing local repository to GitHub:
+
+1. **Navigate to your local repository**:
+```bash
+cd /path/to/your/Lego-
+```
+
+2. **Check existing remotes**:
+```bash
+git remote -v
+```
+
+3. **Add the remote if it doesn't exist**:
+```bash
+git remote add origin https://github.com/KDRDesigns/Lego-.git
+```
+
+Or if the remote exists but is incorrect:
+```bash
+git remote set-url origin https://github.com/KDRDesigns/Lego-.git
+```
+
+4. **Fetch the latest changes**:
+```bash
+git fetch origin
+```
+
+5. **Set up branch tracking**:
+```bash
+git branch --set-upstream-to=origin/main main
+```
+
+6. **Pull the latest changes** (if needed):
+```bash
+git pull origin main
+```
+
+7. **Install dependencies** (if not already done):
+```bash
+npm install
+```
+
+8. **Verify your setup**:
+```bash
+npm run typecheck
+npm run build
+```
+
 ## Development Workflow
 
 ### Making Changes
