@@ -254,6 +254,19 @@ Accessible dialog overlay.
 - `onClose`: Callback function
 - `tone`: Color theme
 
+### Compositions
+
+#### `SkillsDashboard`
+A ready-made dashboard composition built from the primitives (`Card`, `Stack`, `Inline`, `Input`, `Toggle`, `Modal`, etc.) following the `BUILD SKILL.md` typography and spacing guidelines.
+
+```tsx
+import { SkillsDashboard } from '@kdrdesigns/lego';
+
+export function App() {
+  return <SkillsDashboard />;
+}
+```
+
 ## 🎨 Design Tokens
 
 ### Color Tones

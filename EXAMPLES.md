@@ -62,7 +62,17 @@ function ContactForm() {
 }
 ```
 
-## Dashboard Example
+## Skills Dashboard Example
+
+```tsx
+import { SkillsDashboard } from '@kdrdesigns/lego';
+
+export default function App() {
+  return <SkillsDashboard />;
+}
+```
+
+## Dashboard Example (Composed)
 
 ```tsx
 import { Box, Stack, Inline, Card, Badge, Text, Button } from '@kdrdesigns/lego';
